@@ -33,7 +33,8 @@
    */
 public class Main {
     public static void main(String[] args) {
-        int startX = firstDayOfWeekInMonth(1, 1) - 1;
+        int year = 2023; // программа не обрабатывает весокосные года
+        int startX = firstDayOfWeekInMonth(1, 1, year) - 1;
         int startY = 0;
 
         int [][] calendar = new int[24][21];
@@ -41,7 +42,7 @@ public class Main {
         for (int month = 1; month <= 12; month++) {
             for (int j = 1; j <= daysInMonth(month); j++) {
 
-                if (firstDayOfWeekInMonth(j, month) != 7){
+                if (firstDayOfWeekInMonth(j, month, year) != 7){
                     calendar[startY][startX++] = j;
                 }
                 else {
@@ -52,56 +53,54 @@ public class Main {
             switch (month) {
                 case 1:
                     startY = 0;
-                    startX = 6 + firstDayOfWeekInMonth(1, month + 1);
+                    startX = 6 + firstDayOfWeekInMonth(1, month + 1, year);
                     break;
                 case 2:
                     startY = 0;
-                    startX = 13 + firstDayOfWeekInMonth(1, month + 1);
+                    startX = 13 + firstDayOfWeekInMonth(1, month + 1, year);
                     break;
                 case 3:
                     startY = 6;
-                    startX = firstDayOfWeekInMonth(1, month + 1) - 1;
+                    startX = firstDayOfWeekInMonth(1, month + 1, year) - 1;
                     break;
                 case 4:
                     startY = 6;
-                    startX = 6 + firstDayOfWeekInMonth(1, month + 1);
+                    startX = 6 + firstDayOfWeekInMonth(1, month + 1, year);
                     break;
                 case 5:
                     startY = 6;
-                    startX = 13 + firstDayOfWeekInMonth(1, month + 1);
+                    startX = 13 + firstDayOfWeekInMonth(1, month + 1, year);
                     break;
                 case 6:
                     startY = 12;
-                    startX = firstDayOfWeekInMonth(1, month + 1) - 1;
+                    startX = firstDayOfWeekInMonth(1, month + 1, year) - 1;
                     break;
                 case 7:
                     startY = 12;
-                    startX = 6 + firstDayOfWeekInMonth(1, month + 1);
+                    startX = 6 + firstDayOfWeekInMonth(1, month + 1, year);
                     break;
                 case 8:
                     startY = 12;
-                    startX = 13 + firstDayOfWeekInMonth(1, month + 1);
+                    startX = 13 + firstDayOfWeekInMonth(1, month + 1, year);
                     break;
                 case 9:
                     startY = 18;
-                    startX = firstDayOfWeekInMonth(1, month + 1) - 1;
+                    startX = firstDayOfWeekInMonth(1, month + 1, year) - 1;
                     break;
                 case 10:
                     startY = 18;
-                    startX = 6 + firstDayOfWeekInMonth(1, month + 1);
+                    startX = 6 + firstDayOfWeekInMonth(1, month + 1, year);
                     break;
                 case 11:
                     startY = 18;
-                    startX = 13 + firstDayOfWeekInMonth(1, month + 1);
+                    startX = 13 + firstDayOfWeekInMonth(1, month + 1, year);
                     break;
                 default:
             }
         }
-        System.out.println("      январь                 февраль                март");
-        for (int i = 1; i <= 3; i++) {
-            System.out.print("пн вт ср чт пт сб вс   ");
-        }
-        System.out.println();
+        System.out.println("                               " + year + "                             ");
+        System.out.println("       январь                 февраль                март");
+        System.out.println("пн вт ср чт пт сб вс   пн вт ср чт пт сб вс   пн вт ср чт пт сб вс");
 
         for (int i = 0; i <= 23; i++) {
             for (int j = 0; j <= 20; j++) {
@@ -116,24 +115,20 @@ public class Main {
             }
             System.out.println();
             switch (i) {
-                case 6:
-                    System.out.println("      апрель                 май                июнь");
+                case 5:
+                    System.out.println("      апрель                   май                   июнь");
+                    System.out.println("пн вт ср чт пт сб вс   пн вт ср чт пт сб вс   пн вт ср чт пт сб вс");
                 break;
-                case 12:
-                    System.out.println("      июль                 август                сентябрь");
+                case 11:
+                    System.out.println("       июль                  август                сентябрь");
+                    System.out.println("пн вт ср чт пт сб вс   пн вт ср чт пт сб вс   пн вт ср чт пт сб вс");
                 break;
-                case 18:
+                case 17:
                     System.out.println("      октябрь                 ноябрь                декабрь");
+                    System.out.println("пн вт ср чт пт сб вс   пн вт ср чт пт сб вс   пн вт ср чт пт сб вс");
                 break;
                 default:
             }
-            if ((i + 1) % 6 == 0) {
-                for (int j = 1; j <= 3; j++) {
-                    System.out.print("пн вт ср чт пт сб вс   ");
-                }
-                System.out.println();
-            }
-
         }
     }
 
@@ -146,9 +141,9 @@ public class Main {
         else
             return 31;
     }
-    public static int firstDayOfWeekInMonth (int dataIn, int monthIn) {
+    public static int firstDayOfWeekInMonth (int dataIn, int monthIn, int yearIn) {
         // день недели = (день + код месяца + код года) % 7
-        int codeFromFormula = ( ( dataIn + codeMonth(monthIn) + (6 + 23 + 23/4) ) % 7);
+        int codeFromFormula = ( ( dataIn + codeMonth(monthIn) + (6 + yearIn % 100 + (yearIn % 100)/4) ) % 7);
         int codeDay = 0;
         switch (codeFromFormula) {
             case 0: codeDay = 6;
